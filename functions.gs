@@ -33,8 +33,6 @@ function queryGeminiforsubject(subjectplusbodysnip) {
 }  
 
 function queryGeminiforBody(subjectplusbody, date) {
-  const searchQuery = 'from:rbc@myworkday.com';
-  
   const properties = PropertiesService.getScriptProperties().getProperties();
   const geminiApiKey = properties['GOOGLE_API_KEY'];
   const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + geminiApiKey;
@@ -49,7 +47,7 @@ function queryGeminiforBody(subjectplusbody, date) {
         "jobTitle": "<job title/if internship - job title with term>",
         "company": "<company>",
         "location": "<location/remote/unavailable>",
-        "update": "<update if status shortlisted (max three words)/rejected/null>"
+        "update": "<update in three words if any elseif rejected when status rejected else null>"
       }
     ]
   }
@@ -84,7 +82,7 @@ function queryGeminiforBody(subjectplusbody, date) {
   const totalTokenCount = jsonResponse.usageMetadata.totalTokenCount;
   
   const jobInfo = JSON.parse(jsonResponse.candidates[0].content.parts[0].text).job_info[0];
-  return jobInfo
+  return {"jobInfo": jobInfo, "totalTokenCount" : totalTokenCount} 
   
 }
 

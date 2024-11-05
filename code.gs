@@ -1,9 +1,9 @@
 function getGmailMessages() {
   // Search query for job application emails received after August 1, 2024
   //const searchQuery = 'Application -{Linkedin Indeed catchafire} after:2024/5/5 before:2025/5/6';
-  const searchQuery = 'Job application -{hirist.tech, indeed, linkedin, glassdoor} after:2024/08/01'
-
-  const threads = GmailApp.search(searchQuery); 
+  //const searchQuery = 'Job application -{hirist.tech, indeed, linkedin, glassdoor} after:2024/08/01'
+  const searchQuery = "from:rbc@myworkday.com" 
+  const threads = GmailApp.search(searchQuery, 0, 2); 
   let totalusedtokensinloop = 0
   // Loop through the threads, starting from the oldest thread
   for (let i = threads.length - 1; i >= 0; i--) {
@@ -25,7 +25,7 @@ function getGmailMessages() {
       if(
         is_relavant == 1
       ){
-        var jobInfo = queryGeminiforBody(subjectplusbody, date)
+        var {jobInfo, totalTokenCount} = queryGeminiforBody(subjectplusbody, date)
         // Check if 'joninfo' exists and has elements
       
       if (jobInfo) {
@@ -39,7 +39,7 @@ function getGmailMessages() {
               // Format the date
               const formattedDate = formatDate(date);
 
-              
+              totalusedtokensinloop += totalTokenCount
               
 
               // Call the function to input data into the sheet
